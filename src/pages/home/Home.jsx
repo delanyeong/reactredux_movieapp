@@ -8,7 +8,11 @@ import "./style.scss"
 const Home = () => {
   return (
     <div className="homePage">
-        <HeroBanner></HeroBanner>
+        <HeroBanner>
+          <div style={{height: 1000 }}> 
+
+          </div>
+        </HeroBanner>
     </div>
   )
 }

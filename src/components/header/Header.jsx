@@ -18,6 +18,31 @@ const Header = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [location])
+
+    const controlNavBar = () => {
+      console.log(window.scrollY)
+      if (window.scrollY > 200) {
+        if(window.scroll > lastScrollY && !mobileMenu) {
+          setShow("hide")
+        } else {
+          setShow("show")
+        }
+      } else {
+        setShow("top")
+      }
+      setLastScrollY(window.scrollY)
+    }
+
+    useEffect(() => {
+      window.addEventListener("scroll", controlNavBar)
+      return () => {
+        window.removeEventListener("scroll", controlNavBar)
+      }
+    }, [lastScrollY])
+
     const searchQueryHandler = (event) => {
       // search query should not be empty and run search query only after entering
       if (event.key === "Enter" && query.length > 0) {
@@ -38,6 +63,15 @@ const Header = () => {
       setShowSearch(false)
     }
 
+    const navigationHandler = (type) => {
+      if (type === "movie") {
+        navigate("/explore/movie")
+      } else {
+        navigate("/explore/tv")
+      }
+      setMobiileMenu(false);
+    }
+
     return (
         <header className={`header ${mobileMenu ?  "mobileView" : ""} ${show}`}>
           <ContentWrapper>
@@ -45,9 +79,9 @@ const Header = () => {
               <img src={logo} alt="" />
             </div>
             <ul className="menuItems">
-              <li className="menuItem">Movies</li>
-              <li className="menuItem">TV Shows</li>
-              <li className="menuItem"><HiOutlineSearch /></li>
+              <li className="menuItem" onClick={() => navigationHandler("movie")}>Movies</li>
+              <li className="menuItem" onClick={() => navigationHandler("tv")}>TV Shows</li>
+              <li className="menuItem"><HiOutlineSearch onClick={openSearch} /></li>
             </ul>
 
             <div className="mobileMenuItems">
